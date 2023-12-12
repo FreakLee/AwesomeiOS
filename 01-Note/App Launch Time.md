@@ -55,9 +55,29 @@ App 启动涉及一系列复杂的步骤，大部分由系统自动处理。
 
 ### 使用 Instruments 分析启动时间
 
+打开 Instruments，选择 Time Profiler
+![Time Profiler](assets/17023655532509.jpg)
+以上，我们可以看到整个启动过程中的时间花销
+
 
 ### 减少启动时间的一些措施
 
+* Reduce dependencies on external frameworks and dynamic libraries
+减少对外部框架和动态库的依赖
+
+* Remove or reduce the static initializers in your code
+删除或减少代码中的静态初始值设定项
+
+    - C++ static constructors
+    - Objective-C +load methods defined in classes or categories
+    - Functions marked with the clang attribute __attribute__((constructor))
+    - Any function linked into the __DATA,__mod_init_func section of an app or framework binary
+
+* Move expensive tasks out of your app delegate
+将成本高昂的任务移出应用委托
+
+* Reduce the complexity of your initial views
+降低初始视图的复杂性
 
 ## 参考
 
