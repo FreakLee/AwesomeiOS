@@ -68,10 +68,10 @@ App 启动涉及一系列复杂的步骤，大部分由系统自动处理。
 * Remove or reduce the static initializers in your code
 删除或减少代码中的静态初始值设定项
 
-    - C++ static constructors
-    - Objective-C +load methods defined in classes or categories
-    - Functions marked with the clang attribute __attribute__((constructor))
-    - Any function linked into the __DATA,__mod_init_func section of an app or framework binary
+    - C++ static constructors C++ 静态构造函数
+    - Objective-C +load methods defined in classes or categories 在类或类别中定义的 Objective-C +load 方法
+    - Functions marked with the clang attribute __attribute__((constructor)) 标有 clang 属性 __attribute__((constructor)) 的函数
+    - Any function linked into the __DATA,__mod_init_func section of an app or framework binary 链接到应用或框架二进制 __DATA,__mod_init_func 文件部分的任何函数
 
 * Move expensive tasks out of your app delegate
 将成本高昂的任务移出应用委托
@@ -79,6 +79,24 @@ App 启动涉及一系列复杂的步骤，大部分由系统自动处理。
 * Reduce the complexity of your initial views
 降低初始视图的复杂性
 
+* Track additional startup activities
+跟踪其他启动活动
+
+跟踪其他启动活动，在应用中用这个类别 [pointsOfInterest](https://developer.apple.com/documentation/os/oslog/category/3006878-pointsofinterest) 创建一个 OSLog 对象。使用该 os_signpost 函数记录应用准备任务的开始和结束，如以下示例所示
+``` Swift
+class ViewController: UIViewController {
+    static let startupActivities:StaticString = "Startup Activities"
+    let poiLog = OSLog(subsystem: "com.example.CocoaPictures", category: .pointsOfInterest)
+
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        os_signpost(.begin, log: self.poiLog, name: ViewController.startupActivities)
+        // do work to prepare the view
+        os_signpost(.end, log: self.poiLog, name: ViewController.startupActivities)
+    }
+}
+```
 ## 参考
 
 [About the app launch sequence](https://developer.apple.com/documentation/uikit/app_and_environment/responding_to_the_launch_of_your_app/about_the_app_launch_sequence/)
