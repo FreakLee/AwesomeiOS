@@ -123,6 +123,10 @@ class RunLoop {
 
 ### 终止原因
 
+奔溃是最直接的终止类型，奔溃常见的有分段错误（segmentation faults）和非法指示和断言（illegal instructions and asserts）。
+
+![Top causes of app terminations](assets/17032140555281.jpg)
+
 * **Aborts (Abnormal Exits)**. An abort happens when your process calls abort(). This commonly occurs when your app encounters uncaught exceptions or failed assert() calls, often through a framework that your app uses. An abort makes use of the SIGABRT signal. Aborts are crashes.
 中止（异常退出）。当进程调用 abort() 时，会发生中止。当您的应用遇到未捕获的异常或失败 assert() 的调用时，通常会发生这种情况，通常是通过应用使用的框架。中止利用 SIGABRT 信号。中止是崩溃。
 
@@ -141,6 +145,24 @@ class RunLoop {
 * **Memory Pressure**. As part of the normal app lifecycle, iOS & watchOS terminate apps when the system requires more memory than is currently available. The system most often terminates apps in the background when a foreground app needs more memory. Reduce the frequency of memory pressure terminations for your app by lowering your memory at suspension. You can see memory at suspension in the Xcode Organizer. Because you cannot remove all memory pressure terminations, ensure that your app has proper state restoration to provide a fluid user experience.
 内存压力。作为正常应用生命周期的一部分，当系统需要的内存超过当前可用内存时，iOS 和 watchOS 会终止应用。当前台应用需要更多内存时，系统通常会在后台终止应用。通过降低挂起时的内存来降低应用的内存压力终止频率。您可以在 Xcode 管理器中查看挂起的内存。由于无法删除所有内存压力终止，因此请确保应用具有适当的状态还原，以提供流畅的用户体验。
 
+
+终止最常见的原因是`jetsam`，其次是`background task timeout`。
+
+### 后台终止原因
+
+* **Task Timeout**. The system allows your app to continue executing in the background, after the user has placed the app in the background, through the use of the beginBackgroundTask API. If your app does not finish its work in the allotted time, the system will terminate it with the Task Timeout reason.
+任务超时。系统允许应用在用户将应用置于后台后，通过使用 beginBackgroundTask API，继续在后台执行。如果您的应用未在分配的时间内完成其工作，系统将终止它，并显示任务超时原因。
+
+* **File Lock**. A File Lock termination happens when your app continues to hold a lock on a shared file held in your AppGroup when the user put your app in the background. The system performs this termination to avoid blocking on a lock that your app may never release.
+文件锁定。当用户将应用置于后台时，当应用继续对 AppGroup 中保存的共享文件保持锁定时，就会发生文件锁定终止。系统执行此终止是为了避免阻止您的应用可能永远不会释放的锁。
+
+在 iOS 14以前对于应用的后台终止信号不够详尽。iOS 14及以后，利用`MetricKit` 中的`MXBackgroundExitData`来记录详细的终止信息。
+
+
+### 减少终止的措施
+
+*  Xcode Organizer
+*  MetricKit
 
 ## 参考
 
