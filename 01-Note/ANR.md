@@ -135,6 +135,13 @@ class RunLoop {
 * **Illegal Instruction**. An Illegal Instruction termination happens when your app attempts to execute an instruction that the system cannot interpret. Illegal Instruction terminations are crashes.
 非法指令。当您的应用尝试执行系统无法解释的指令时，就会发生非法指令终止。非法指令终止是崩溃。
 
+* **App Watchdog**. An App Timeout happens when your app takes too long to launch. The system gives a lenient amount of time to launch, and a timeout is generally indicative of your app getting stuck on launch. Many users will quit your app before this limit is hit, and those quits will not be considered an App Timeout. macOS apps do not have a launch time limit.
+应用看门狗。当您的应用启动时间过长时，就会发生应用超时。系统会提供宽松的启动时间，超时通常表示您的应用在启动时卡住了。许多用户会在达到此限制之前退出您的应用，这些退出不会被视为应用超时。macOS 应用程序没有启动时间限制。
+
+* **Memory Pressure**. As part of the normal app lifecycle, iOS & watchOS terminate apps when the system requires more memory than is currently available. The system most often terminates apps in the background when a foreground app needs more memory. Reduce the frequency of memory pressure terminations for your app by lowering your memory at suspension. You can see memory at suspension in the Xcode Organizer. Because you cannot remove all memory pressure terminations, ensure that your app has proper state restoration to provide a fluid user experience.
+内存压力。作为正常应用生命周期的一部分，当系统需要的内存超过当前可用内存时，iOS 和 watchOS 会终止应用。当前台应用需要更多内存时，系统通常会在后台终止应用。通过降低挂起时的内存来降低应用的内存压力终止频率。您可以在 Xcode 管理器中查看挂起的内存。由于无法删除所有内存压力终止，因此请确保应用具有适当的状态还原，以提供流畅的用户体验。
+
+
 ## 参考
 
 [Understanding user interface responsiveness](https://developer.apple.com/documentation/xcode/understanding-user-interface-responsiveness)
