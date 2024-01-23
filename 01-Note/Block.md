@@ -578,7 +578,7 @@ Variable is not assignable (missing __block type specifier)
 * __block的__forwarding指针
 ![block_memory__forwarding](assets/block_memory__forwarding.jpg)
 
-### 对象类型的auto变量
+### 对象类型的auto变量、__block变量
 
 * 当block在栈上时，对它们都不会产生强引用
 
@@ -596,7 +596,7 @@ Variable is not assignable (missing __block type specifier)
     对象类型的auto变量（假设变量名叫做p）
     _Block_object_dispose((void*)src->p, 3/*BLOCK_FIELD_IS_OBJECT*/);
 
-### 对象类型的__block变量
+### 被__block修饰的对象类型
 
 * 当__block变量在栈上时，不会对指向的对象产生强引用
 
